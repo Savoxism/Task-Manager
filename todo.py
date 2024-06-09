@@ -1,5 +1,5 @@
 import sqlite3
-
+ 
 class TodoList:
     def __init__(self, db_path='todo.db'):
         self.conn = sqlite3.connect(db_path, check_same_thread=False)
