@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form action="{{ url_for('add_task') }}" method="POST">
+        <input type="text" name="task" placeholder="Enter a new task" required>
+        <button type="submit">Add Task</button>
+    </form>
+    <ul>
+        {% for idx, task in enumerate(tasks) %}
+        {% if not task['completed'] %}
+        <li>
+            {{ task['task'] }}
+            {% if task['starred'] %}
+            <a href="{{ url_for('unstar_task', task_id=task['id']) }}">&#9733;</a> <!-- Star Icon (Filled) -->
+            {% else %}
+            <a href="{{ url_for('star_task', task_id=task['id']) }}">&#9734;</a> <!-- Star Icon (Empty) -->
+            {% endif %}
+            <a href="{{ url_for('complete_task', task_id=task['id']) }}">Complete</a>
+            <a href="{{ url_for('delete_task', task_id=task['id']) }}">Delete</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <button id="toggle-completed">Completed</button>
+    <div id="completed-tasks-container"></div>
+    <script id="show-completed-state" type="application/json">{{ show_completed | tojson }}</script>
+</body>
+</html>
